@@ -10,8 +10,8 @@ class PhoneManager
     private const SHATEL_MOBILE = ['099810', '099811', '099812', '099813', '099814', '099815', '099816', '099817'];
     private const SAMANTEL = ['099999', '09999'];
     private const TELE_KISH = ['0934'];
-    private const APTEL =  ['099910', '099911', '099913', '099914'];
-    private const LOTUSTEL =  ['09990'];
+    private const APTEL = ['099910', '099911', '099913', '099914'];
+    private const LOTUSTEL = ['09990'];
     private const ARIANTEL = ['09998'];
     private const ANARSTAN = ['0994'];
 
@@ -89,9 +89,10 @@ class PhoneManager
             ...self::ARIANTEL,
             ...self::ANARSTAN,
         ];
-        $normalizedNumber = self::normalizeNumber($number);
+        $phone = self::normalizeNumber($number);
+        $sixDigits ='0' . substr($phone, 0, 6);
         foreach ($validPrefixes as $prefix) {
-            if (strpos($normalizedNumber, $prefix) === 0) {
+            if (strpos($sixDigits, $prefix) === 0) {
                 return true;
             }
         }
@@ -100,23 +101,25 @@ class PhoneManager
 
     public static function getOperatorName($number): string
     {
-        $normalizedNumber = self::normalizeNumber($number);
-        $prefix = substr($normalizedNumber, 0, 4);
+        $phone = self::normalizeNumber($number);
+        $sixDigits = '0' . substr($phone, 0, 6);
         $operatorPrefixes = [
-            'hamrah-e-aval'=>self::HAMRAH_E_AVAL,
-            'irancell'=>self::IRANCELL,
-            'rightel'=>self::RIGHTEL,
-            'shatel-mobile'=>self::SHATEL_MOBILE,
-            'samantel'=>self::SAMANTEL,
-            'tele-kish'=>self::TELE_KISH,
-            'aptel'=>self::APTEL,
-            'lotustel'=>self::LOTUSTEL,
-            'ariantel'=>self::ARIANTEL,
-            'anarstan'=>self::ANARSTAN,
+            'hamrah-e-aval' => self::HAMRAH_E_AVAL,
+            'irancell' => self::IRANCELL,
+            'rightel' => self::RIGHTEL,
+            'shatel-mobile' => self::SHATEL_MOBILE,
+            'samantel' => self::SAMANTEL,
+            'tele-kish' => self::TELE_KISH,
+            'aptel' => self::APTEL,
+            'lotustel' => self::LOTUSTEL,
+            'ariantel' => self::ARIANTEL,
+            'anarstan' => self::ANARSTAN,
         ];
         foreach ($operatorPrefixes as $operator => $prefixes) {
-            if (in_array($prefix, $prefixes)) {
-                return $operator;
+            foreach ($prefixes as $prefixe) {
+                if (strpos($sixDigits, $prefixe) === 0) {
+                    return $operator;
+                }
             }
         }
         return 'other';
