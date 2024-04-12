@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Ispahbod\\phoneManager\\": "src"
+            "Ispahbod\\PhoneManager\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Ispahbod\\phoneManager\\Tests\\": "tests"
+            "Ispahbod\\PhoneManager\\Tests\\": "tests"
         }
     },
     "config": {

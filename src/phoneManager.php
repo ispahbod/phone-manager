@@ -1,8 +1,8 @@
 <?php
 
-namespace Ispahbod\phoneManager;
+namespace Ispahbod\PhoneManager;
 
-class phoneManager
+class PhoneManager
 {
     private const HAMRAH_E_AVAL = ['0910', '0911', '0912', '0913', '0914', '0915', '0916', '0917', '0918', '0919', '0990', '0991', '0992', '0993', '0994'];
     private const IRANCELL = ['0930', '0933', '0935', '0936', '0937', '0938', '0939', '0900', '0901', '0902', '0903', '0904', '0905', '0941'];
