@@ -2,6 +2,8 @@
 
 namespace Ispahbod\PhoneManager;
 
+use Ispahbod\StringManager\StringManager;
+
 class PhoneManager
 {
     private const HAMRAH_E_AVAL = ['0910', '0911', '0912', '0913', '0914', '0915', '0916', '0917', '0918', '0919', '0990', '0991', '0992', '0993', '0994'];
@@ -17,11 +19,13 @@ class PhoneManager
 
     public static function isValidIranianNumber($number): bool
     {
+        $number = self::sanitizePhone($number);
         return preg_match('/^(\+98|0)?9\d{9}$/', $number);
     }
 
     public static function getPrefix($number): string|false
     {
+        $number = self::sanitizePhone($number);
         if (self::isValidIranianNumber($number)) {
             return substr(self::normalizeNumber($number), 0, 3);
         }
@@ -30,6 +34,7 @@ class PhoneManager
 
     public static function getMiddleThreeDigits($number): string|false
     {
+        $number = self::sanitizePhone($number);
         if (self::isValidIranianNumber($number)) {
             return substr(self::normalizeNumber($number), 3, 3);
         }
@@ -38,6 +43,7 @@ class PhoneManager
 
     public static function getLastFourDigits($number): string|false
     {
+        $number = self::sanitizePhone($number);
         if (self::isValidIranianNumber($number)) {
             return substr(self::normalizeNumber($number), 6, 4);
         }
@@ -46,6 +52,7 @@ class PhoneManager
 
     public static function formatNumberInternational($number): string|false
     {
+        $number = self::sanitizePhone($number);
         if (self::isValidIranianNumber($number)) {
             return '+98' . substr(self::normalizeNumber($number), 0);
         }
@@ -54,6 +61,7 @@ class PhoneManager
 
     public static function formatNumberLocal($number): string|false
     {
+        $number = self::sanitizePhone($number);
         if (self::isValidIranianNumber($number)) {
             return '0' . substr(self::normalizeNumber($number), 0);
         }
@@ -62,6 +70,7 @@ class PhoneManager
 
     public static function formatNumberBare($number): string|false
     {
+        $number = self::sanitizePhone($number);
         if (self::isValidIranianNumber($number)) {
             return substr(self::normalizeNumber($number), 0);
         }
@@ -70,6 +79,7 @@ class PhoneManager
 
     private static function normalizeNumber($number): string
     {
+        $number = self::sanitizePhone($number);
         $number = preg_replace('/^\+98/', '', $number);
         $number = preg_replace('/^0/', '', $number);
         return $number;
@@ -77,6 +87,7 @@ class PhoneManager
 
     public static function isValidPrefix($number): bool
     {
+        $number = self::sanitizePhone($number);
         $validPrefixes = [
             ...self::HAMRAH_E_AVAL,
             ...self::IRANCELL,
@@ -101,6 +112,7 @@ class PhoneManager
 
     public static function getOperatorName($number): string
     {
+        $number = self::sanitizePhone($number);
         $phone = self::normalizeNumber($number);
         $sixDigits = '0' . substr($phone, 0, 6);
         $operatorPrefixes = [
@@ -123,5 +135,10 @@ class PhoneManager
             }
         }
         return 'other';
+    }
+
+    private static function sanitizePhone($number): string
+    {
+        return StringManager::convertPersianNumbersToEnglish($number);
     }
 }
