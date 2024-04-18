@@ -137,7 +137,7 @@ class PhoneManager
         return 'other';
     }
 
-    private static function sanitizePhone($number): string
+    public static function sanitizePhone($number): string
     {
         return StringManager::convertPersianNumbersToEnglish($number);
     }
